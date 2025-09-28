@@ -1,10 +1,11 @@
 import './Button.css';
 
 
-function Button () {
+function Button ({text}) {
+	
 	return (
 		<>
-			<button className='button' >Искать</button>
+			<button  className='button' >{text}</button>
 		</>
 	);
 }
