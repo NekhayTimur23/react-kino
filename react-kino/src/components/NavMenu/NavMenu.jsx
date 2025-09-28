@@ -11,7 +11,7 @@ function NavMenu () {
 				<li>
 					<a href='#'>
                         Войти 
-						<img src='/public/exit.svg'/>
+						<img src='/exit.svg'/>
 					</a>
 				</li>
 			</ul>
