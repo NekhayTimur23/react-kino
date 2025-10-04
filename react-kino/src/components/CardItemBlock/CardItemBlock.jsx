@@ -1,9 +1,9 @@
-import './CardItemBlock.css';
+import styles from './CardItemBlock.module.css';
 
 function CardItemBlock({children}) {
 	
 	return (
-		<div className='card-itemb_block'>
+		<div className={styles['card-itemb_block']}>
 			{children}
 		</div>
 	);

@@ -1,11 +1,11 @@
-import './NavRightSection.css';
+import styles from './NavRightSection.module.css';
 import NavMenu from '../NavMenu/NavMenu';
 
 
 function NavRightSection () {
 	
 	return (
-		<div className='nav-section_right'>
+		<div className={styles['nav-section_right']}>
 			<NavMenu>
 
 			</NavMenu>

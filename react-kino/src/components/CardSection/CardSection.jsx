@@ -1,9 +1,9 @@
-import './CardSection.css';
+import styles from './CardSection.module.css';
 
 function CardSection({children}) {
 	
 	return (
-		<div className='card-section'>
+		<div className={styles['card-section']}>
 			{children}
 		</div>
 	);

@@ -1,5 +1,5 @@
 
-import './App.css';
+import styles from './App.module.css';
 
 import NavSection from './components/NavSection/NavSection';
 import NavLeftSection from './components/NavLeftSection/NavLeftSection';
@@ -97,7 +97,7 @@ function App() {
 	// const [cardItem, setCardItem] = useState;
 
 	return (
-		<div className='app'>
+		<div className={styles['app']}>
 			<NavSection>
 				<NavLeftSection/>
 				<NavRightSection/>
