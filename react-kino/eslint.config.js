@@ -23,11 +23,12 @@ export default defineConfig([
 			}
 		},
 		rules: {
-			'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
-			semi: ['error', 'always', { omitLastInOneLineBlock: false }],
+			'no-undef': 'off', // отключает предупреждение про неописанные переменные
+			'no-unused-vars': ['warn', { varsIgnorePattern: '^[A-Z_]' }],
+			semi: ['error', 'always'],
 			'comma-dangle': ['error', 'never'],
 			quotes: ['error', 'single'],
-			'indent': ['error', 'tab'] // или 4, в зависимости от вашего стиля
+			indent: ['error', 'tab'] // или 4, в зависимости от вашего стиля
 			// 'no-trailing-spaces': 'error',
 			// 'no-multiple-empty-lines': ['error', { max: 2, maxEOF: 1 }],
 			// 'eol-last': 'error',

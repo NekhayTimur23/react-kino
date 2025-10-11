@@ -2,13 +2,14 @@ import styles from './NavRightSection.module.css';
 import NavMenu from '../NavMenu/NavMenu';
 
 
-function NavRightSection () {
+function NavRightSection ({loginState, exitAccount}) {
 	
 	return (
 		<div className={styles['nav-section_right']}>
-			<NavMenu>
-
-			</NavMenu>
+			<NavMenu 
+				loginState={loginState}
+				exitAccount={exitAccount}
+			/>
 		</div>
 	);
 }

@@ -1,9 +1,9 @@
 import styles from './Title.module.css';
 
-function Title () {
+function Title ({title}) {
 	return (
 		<>
-			<h1 className={styles['h1']}>Поиск</h1>
+			<h1 className={styles['h1']}>{title}</h1>
 		</>
 	);
 }
