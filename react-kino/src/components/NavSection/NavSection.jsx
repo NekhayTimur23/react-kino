@@ -1,10 +1,10 @@
-import './NavSection.css';
+import styles from './NavSection.module.css';
 
 
 function NavSection ({children}) {
 	
 	return (
-		<div className='nav-section'>
+		<div className={styles['nav-section']}>
 			{children}
 		</div>
 	);

@@ -1,9 +1,9 @@
-import './SearchBox.css';
+import styles from './SearchBox.module.css';
 
 function SearchBox({children}) {
 	
 	return (
-		<div className='search-box'>
+		<div className={styles['search-box']}>
 			{children}
 		</div>
 	);

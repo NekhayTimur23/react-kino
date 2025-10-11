@@ -1,5 +1,6 @@
 
-import './App.css';
+import styles from './App.module.css';
+
 
 import NavSection from './components/NavSection/NavSection';
 import NavLeftSection from './components/NavLeftSection/NavLeftSection';
@@ -12,98 +13,61 @@ import InputSearchForm from './components/InputSearchForm/InputSearchForm';
 import CardSection from './components/CardSection/CardSection';
 import CardItemBlock from './components/CardItemBlock/CardItemBlock';
 import CardItems from './components/CardItems/CardItems';
-// import { useState } from 'react';
-
-
-const CARD_ARR = [
-	{
-		title: 'Black Widow',
-		favorites: '324',
-		poster: {
-			src: '/public/BlackWidow.png',
-			alt: 'BlackWidow'
-		},
-		id: 1
-	},
-	{
-		title: 'ShangChi',
-		favorites: '124',
-		poster: {
-			src: '/public/ShangChi.png',
-			alt: 'ShangChi'
-		},
-		id: 2
-	},
-	{
-		title: 'Loki',
-		favorites: '235',
-		poster: {
-			src: '/public/Loki.png',
-			alt: 'Loki'
-		},
-		id: 3
-	},
-	{
-		title: 'How I Met Your Mother',
-		favorites: '324',
-		poster: {
-			src: '/public/HowIMetYourMother.png',
-			alt: 'HowIMetYourMother'
-		},
-		id: 4
-	},
-	{
-		title: 'Money Heist',
-		favorites: '8125',
-		poster: {
-			src: '/public/MoneyHeist.png',
-			alt: 'MoneyHeist'
-		},
-		id: 5
-	},
-	{
-		title: 'Friends',
-		favorites: '123',
-		poster: {
-			src: '/public/Friends.png',
-			alt: 'Friends'
-		},
-		id: 6
-	},
-	{
-		title: 'The Big Bang Theory',
-		favorites: '12',
-		poster: {
-			src: '/public/TheBigBangTheory.png',
-			alt: 'TheBigBangTheory'
-		},
-		id: 7
-	},
-	{
-		title: 'Two And a Half Men',
-		favorites: '456',
-		poster: {
-			src: '/public/TwoAndaHalfMen.png',
-			alt: 'TwoAndaHalfMen'
-		},
-		id: 8
-	}
-];
-
+import Authorization from './components/Authorization/Authorization';
+import { CARD_ARR, loginReducer, PEREMENAY } from './App.state';
+import { useReducer, useRef, useEffect } from 'react';
 
 
 function App() {
 
-	// const [cardItem, setCardItem] = useState;
+	const [loginState, dispatchLogin] = useReducer(loginReducer, PEREMENAY);
+	const inputRef = useRef();
+	const {checkenLog} = loginState;
+	
+	useEffect(() => {
+		localStorage.setItem('logined', JSON.stringify({name: 'Тимур', isLogined: true}));
+	}, []);
+	
+		
+	const exitAccount = () => {
+		if (checkenLog) {
+			dispatchLogin({type: 'EXIT_ACCOUNT'});
+			localStorage.setItem('logined', JSON.stringify({name: 'Тимур', isLogined: true}));
+		}
+		console.log('выйти');
+	};
+
+	const onChangeFn = (e) => {
+		dispatchLogin({type: 'SET_VALUE', payload: e.target.value});
+	};
+	
+	const inputFormFn = () => {
+		const aaa = JSON.parse(localStorage.getItem('logined'));
+		if (aaa) {
+			dispatchLogin({type: 'SET_LOGIN', payload: aaa});
+			dispatchLogin({type: 'CHECK_LOGIN'});
+		}
+			
+	};
 
 	return (
-		<div className='app'>
+		<div className={styles['app']}>
 			<NavSection>
-				<NavLeftSection/>
-				<NavRightSection/>
+				<NavLeftSection />
+				<NavRightSection 
+					loginState={loginState}
+					exitAccount={exitAccount}
+				/>
 			</NavSection>
+			<Authorization 
+				inputRef={inputRef}
+				checkenLog={checkenLog}
+				onChangeFn={onChangeFn}
+				inputFormFn={inputFormFn}
+				loginState={loginState}
+			/>
 			<Header>
-				<Title/>
+				<Title title="Поиск"/>
 				<Paragraph/>
 				<SearchBox>
 					<InputSearchForm/>

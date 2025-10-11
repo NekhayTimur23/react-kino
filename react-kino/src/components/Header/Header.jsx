@@ -1,9 +1,9 @@
-import './Header.css';
+import styles from './Header.module.css';
 
 function Header({children}) {
 	
 	return (
-		<div className='header'>
+		<div className={styles['header']}>
 			{children}
 		</div>
 	);

@@ -1,0 +1,10 @@
+.authorization {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    gap: 27px;
+}
+
+.dispNone {
+    display: none;
+}

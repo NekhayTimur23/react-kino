@@ -1,5 +1,6 @@
-import './InputSearchForm.css';
+import styles from './InputSearchForm.module.css';
 import Button from '../Button/Button';
+import Input from '../Input/Iinput';
 import { useState } from 'react';
 
 
@@ -18,8 +19,13 @@ function InputSearchForm () {
 	
 	return (
 		<>
-			<form className='input-form' onSubmit={formSubmit} >
-				<input type="text" onChange={inputChange} value={inputData} placeholder="Введите название"></input>
+			<form className={styles['input-form']} onSubmit={formSubmit} >
+				<Input 
+					type="text" 
+					onChange={inputChange} 
+					value={inputData} 
+					placeholder="Введите название"
+				/>
 				<Button text={'Искать'}/>
 			</form>
 		</>
