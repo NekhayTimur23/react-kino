@@ -70,6 +70,15 @@ export const CARD_ARR = [
 			alt: 'TwoAndaHalfMen'
 		},
 		id: 8
+	},
+	{
+		title: 'Two And a Half Men',
+		favorites: '456',
+		poster: {
+			src: '/public/TwoAndaHalfMen.png',
+			alt: 'TwoAndaHalfMen'
+		},
+		id: 9
 	}
 ];
 
