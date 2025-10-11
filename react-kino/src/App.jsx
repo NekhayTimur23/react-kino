@@ -76,7 +76,7 @@ function App() {
 			<CardSection>
 				{CARD_ARR.length === 0 
 					?
-					<p>Список фильмов пуст!</p>
+					<p>Список фильмов пуст</p>
 					:
 				 CARD_ARR.map(e => (
 						<CardItemBlock key={e.id}>
