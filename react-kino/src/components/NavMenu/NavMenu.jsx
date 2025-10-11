@@ -11,7 +11,7 @@ function NavMenu ({loginState, exitAccount}) {
 			<ul className={styles['nav-menu_list']}>
 				<li><a href='#'>Поиск фильмов</a></li>
 				<li><a href='#'>Мои фильмы</a></li>
-				{checkenLog > 0 && <li ><a href='#'>{name}</a></li>}
+				{checkenLog && <li ><a href='#'>{name}</a></li>}
 				<li onClick={exitAccount}>
 					<a href='#'>{ checkenLog ? 'Выйти' : 'Войти' }
                          

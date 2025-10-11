@@ -32,7 +32,7 @@ function App() {
 	const exitAccount = () => {
 		if (checkenLog) {
 			dispatchLogin({type: 'EXIT_ACCOUNT'});
-			localStorage.setItem('logined', JSON.stringify({name: 'Тимур', isLogined: true}));
+			localStorage.setItem('logined', JSON.stringify({name: 'Тимур', isLogined: false}));
 		}
 		console.log('выйти');
 	};
