@@ -1,20 +1,21 @@
 import styles from './NavMenu.module.css';
+import { UserContext } from '../../context/user.context';
+import { useContext } from 'react';
 
 
 
-function NavMenu ({loginState, exitAccount}) {
+function NavMenu ({ exitAccount}) {
 
-	const {name, checkenLog} = loginState;
+	const {userAcc} = useContext(UserContext);
 	
 	return (
 		<div className={styles['nav-menu']}>
 			<ul className={styles['nav-menu_list']}>
 				<li><a href='#'>Поиск фильмов</a></li>
 				<li><a href='#'>Мои фильмы</a></li>
-				{checkenLog > 0 && <li ><a href='#'>{name}</a></li>}
+				{userAcc.isLogined && <li ><a href='#'>{userAcc.name}</a></li>}
 				<li onClick={exitAccount}>
-					<a href='#'>{ checkenLog ? 'Выйти' : 'Войти' }
-                         
+					<a href='#'>{ userAcc.isLogined ? 'Выйти' : 'Войти' }
 						<img src='/exit.svg'/>
 					</a>
 				</li>

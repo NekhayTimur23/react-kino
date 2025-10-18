@@ -1,3 +1,5 @@
+
+
 export const CARD_ARR = [
 	{
 		title: 'Black Widow',
@@ -70,31 +72,39 @@ export const CARD_ARR = [
 			alt: 'TwoAndaHalfMen'
 		},
 		id: 8
+	},
+	{
+		title: 'Two And a Half Men',
+		favorites: '456',
+		poster: {
+			src: '/public/TwoAndaHalfMen.png',
+			alt: 'TwoAndaHalfMen'
+		},
+		id: 9
 	}
 ];
 
-export const PEREMENAY = {
-	name : '',
-	isLogined : false,
-	value: '',
-	checkenLog: false
-};
+// export const PEREMENAY = {
+// 	name : '',
+// 	isLogined: false,
+// 	value: ''
+// };
 
 
-export function loginReducer(state, action) {
-	switch(action.type) {
-	case 'SET_LOGIN' :
-		return {...state, ...action.payload};
+// export function loginReducer(state, action) {
+// 	switch(action.type) {
+// 	case 'SET_LOGIN' :
+// 		return {...state, ...action.payload};
 
-	case 'SET_VALUE' :
-		return { ...state, value: action.payload};
+// 	case 'SET_VALUE' :
+// 		return { ...state, value: action.payload};
 
-	case 'CHECK_LOGIN' :
-		return { ...state, checkenLog: state.name == state.value };
-	case 'EXIT_ACCOUNT' :
-		return { ...state, checkenLog: false };
-	case 'CLEAR' :
-		return { ...state, value: PEREMENAY.value };
-	}
+// 	case 'CHECK_LOGIN' :
+// 		return { ...state, isLogined: state.name === state.value };
+// 	case 'EXIT_ACCOUNT' :
+// 		return { ...state, isLogined: false };
+// 	case 'CLEAR' :
+// 		return { ...state, value: PEREMENAY.value };
+// 	}
 	
-};
+// };
