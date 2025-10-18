@@ -15,26 +15,25 @@ import CardItemBlock from './components/CardItemBlock/CardItemBlock';
 import CardItems from './components/CardItems/CardItems';
 import Authorization from './components/Authorization/Authorization';
 import { CARD_ARR, loginReducer, PEREMENAY } from './App.state';
-import { useReducer, useRef, useEffect } from 'react';
+import { useReducer, useRef, useContext } from 'react';
+import { UserContext } from './context/user.context';
 
 
 function App() {
 
+	const {userAcc, toggleUserAcc} = useContext(UserContext);
+
 	const [loginState, dispatchLogin] = useReducer(loginReducer, PEREMENAY);
-	const inputRef = useRef();
-	const {checkenLog} = loginState;
+	const {value, checkenLog} = loginState;
 	
-	useEffect(() => {
-		localStorage.setItem('logined', JSON.stringify({name: 'Тимур', isLogined: true}));
-	}, []);
+	const inputRef = useRef();
 	
 		
 	const exitAccount = () => {
 		if (checkenLog) {
 			dispatchLogin({type: 'EXIT_ACCOUNT'});
-			localStorage.setItem('logined', JSON.stringify({name: 'Тимур', isLogined: false}));
+			toggleUserAcc(false);
 		}
-		console.log('выйти');
 	};
 
 	const onChangeFn = (e) => {
@@ -42,12 +41,11 @@ function App() {
 	};
 	
 	const inputFormFn = () => {
-		const aaa = JSON.parse(localStorage.getItem('logined'));
-		if (aaa) {
-			dispatchLogin({type: 'SET_LOGIN', payload: aaa});
+		if (value === userAcc.name) {
+			dispatchLogin({type: 'SET_LOGIN', payload: userAcc});
 			dispatchLogin({type: 'CHECK_LOGIN'});
+			toggleUserAcc(value);
 		}
-			
 	};
 
 	return (

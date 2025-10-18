@@ -1,3 +1,5 @@
+
+
 export const CARD_ARR = [
 	{
 		title: 'Black Widow',
@@ -99,7 +101,7 @@ export function loginReducer(state, action) {
 		return { ...state, value: action.payload};
 
 	case 'CHECK_LOGIN' :
-		return { ...state, checkenLog: state.name == state.value };
+		return { ...state, checkenLog: state.name === state.value };
 	case 'EXIT_ACCOUNT' :
 		return { ...state, checkenLog: false };
 	case 'CLEAR' :
