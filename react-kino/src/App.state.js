@@ -84,28 +84,27 @@ export const CARD_ARR = [
 	}
 ];
 
-export const PEREMENAY = {
-	name : '',
-	isLogined : false,
-	value: '',
-	checkenLog: false
-};
+// export const PEREMENAY = {
+// 	name : '',
+// 	isLogined: false,
+// 	value: ''
+// };
 
 
-export function loginReducer(state, action) {
-	switch(action.type) {
-	case 'SET_LOGIN' :
-		return {...state, ...action.payload};
+// export function loginReducer(state, action) {
+// 	switch(action.type) {
+// 	case 'SET_LOGIN' :
+// 		return {...state, ...action.payload};
 
-	case 'SET_VALUE' :
-		return { ...state, value: action.payload};
+// 	case 'SET_VALUE' :
+// 		return { ...state, value: action.payload};
 
-	case 'CHECK_LOGIN' :
-		return { ...state, checkenLog: state.name === state.value };
-	case 'EXIT_ACCOUNT' :
-		return { ...state, checkenLog: false };
-	case 'CLEAR' :
-		return { ...state, value: PEREMENAY.value };
-	}
+// 	case 'CHECK_LOGIN' :
+// 		return { ...state, isLogined: state.name === state.value };
+// 	case 'EXIT_ACCOUNT' :
+// 		return { ...state, isLogined: false };
+// 	case 'CLEAR' :
+// 		return { ...state, value: PEREMENAY.value };
+// 	}
 	
-};
+// };
