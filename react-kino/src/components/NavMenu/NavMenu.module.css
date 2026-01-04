@@ -23,6 +23,11 @@ a {
 }
 
 a:hover {
-    color: rgba(146, 150, 160, 0.9);
+    color: #bdc6e1;
+;
 
+}
+
+.active {
+    color: #ffffff;
 }

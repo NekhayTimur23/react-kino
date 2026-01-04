@@ -5,4 +5,5 @@ export interface CardItemsProps {
     alt: string;
     src: string;
   };
+  id: number;
 }

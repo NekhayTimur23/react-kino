@@ -1,55 +1,32 @@
-.favorites {
-    display: flex;
-    gap: 4px ;
-    position: absolute;
-    background: rgba(0, 0, 0, 0.65);
-    color: rgba(255, 173, 73, 1);
-    border-radius: 8px;
-    padding: 4px 8px;
-    margin: 16px;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 24px;
-    letter-spacing: 0%;
+.button-card {
+  display: block;
+  height: 100%;
+  cursor: pointer;
+  border-radius: 12px;
+  background: rgba(32, 40, 62, 0.8);
+}
+
+.button-card:hover {
+  background: rgba(48, 60, 88, 0.8);
 }
 
 .movie-poster_img {
-    width: 266px;
-    height: 400px;
-    margin: 8px ;
-    margin-bottom: 0;
+  width: 266px;
+  height: 400px;
+  margin: 8px;
+  margin-bottom: 0;
 }
 
-.description{
-    margin: 16px 8px;
-    padding: 0 8px;
+.description {
+  margin: 16px 8px;
+  padding: 0 8px;
 }
 
-.button-favotire{
-    display: flex;
-    gap: 8px;
-}
-
-.button-favotire_button {
-    background: none;
-    border: none;
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 24px;
-    letter-spacing: 2%;
-    color: rgba(123, 110, 246, 1);
-
-}
-
-.button-favotire_img{
-    height: 24px;
-}
-
-.description_title{
-    color: rgba(235, 238, 245, 1);
-    font-weight: 600;
-    font-size: 16px;
-    line-height: 24px;
-    letter-spacing: 2%;
-    margin-bottom: 16px;
+.description_title {
+  color: rgba(235, 238, 245, 1);
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 2%;
+  margin-bottom: 16px;
 }

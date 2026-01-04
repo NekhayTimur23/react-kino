@@ -1,0 +1,25 @@
+.button-favotire {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.button-favotire_img {
+  height: 24px;
+}
+
+.button-favotire_button {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 2%;
+  color: rgba(123, 110, 246, 1);
+  margin: 0;
+}
+
+.favotire_button-on {
+  color: #37d8a7;
+}

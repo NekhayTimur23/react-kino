@@ -1,8 +1,12 @@
+import cn from "classnames";
 import styles from "./Title.module.css";
+
 import { TitleProps } from "./Title.props";
 
-function Title({ title }: TitleProps) {
-  return <h1 className={styles["h1"]}>{title}</h1>;
+export function Title({ children, size = '64', className }: TitleProps) {
+  return (
+    <h1 className={cn(styles["h1"], styles[`h1_${size}`], className)}>
+      {children}
+    </h1>
+  );
 }
-
-export default Title;

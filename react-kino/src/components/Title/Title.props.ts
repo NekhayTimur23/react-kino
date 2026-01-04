@@ -1,5 +1,6 @@
-import { ReactNode } from "react";
+import { HTMLAttributes, ReactNode } from "react";
 
-export interface TitleProps {
-    title: ReactNode
+export interface TitleProps extends HTMLAttributes<HTMLHeadingElement> {
+  children: ReactNode;
+  size?: string;
 }

@@ -1,8 +1,17 @@
 .h1 {
-    font-size: 64px;
     font-weight: 600;
-    line-height: 80px;
     letter-spacing: -2%;
     color: #ebeef5;
+}
+
+.h1_64 {
+    font-size: 64px;
+    line-height: 80px;
     margin: 0 0 16px 0;
+}
+
+.h1_32 {
+    font-size: 32px;
+    line-height: 40px;
+    margin: 0;
 }

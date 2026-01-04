@@ -8,6 +8,9 @@ interface UserAcc {
 interface UserContextValue {
   userAcc: UserAcc;
   toggleUserAcc: (userName: string) => void;
+  arrFaforites: number[];
+  addMoviesInFavorite: (num: number) => void;
+  removeMoviesInFavorite: (num: number) => void;
 }
 
 interface UserProviderProps {
@@ -24,6 +27,27 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       : { name: "Тимур", isLogined: false };
   });
 
+  //МАССИВ СОХРАНЕНИХ ФИЛЬМОВ
+  const [arrFaforites, setArrFaforites] = useState<number[]>([]);
+
+  
+
+
+  //ФУНКЦИЯ ДОБАВЛЕНИЯ ФИЛЬМОВ В ИЗБРАНОЕ
+  const addMoviesInFavorite = (id: number) => {
+    setArrFaforites((elem) => {
+      if (elem.includes(id)) {
+        return elem;
+      }
+      return [...elem, id];
+    });
+  };
+
+  //ФУНКЦИЯ УДАЛЕНИЯ ФИЛЬМОВ ИЗ ИЗБРАНОГО
+  const removeMoviesInFavorite = (id: number) => {
+    setArrFaforites((elem) => elem.filter((e) => e != id));
+  };
+
   useEffect(() => {
     localStorage.setItem("logined", JSON.stringify(userAcc));
   }, [userAcc]);
@@ -37,7 +61,15 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   };
 
   return (
-    <UserContext.Provider value={{ userAcc, toggleUserAcc }}>
+    <UserContext.Provider
+      value={{
+        userAcc,
+        toggleUserAcc,
+        addMoviesInFavorite,
+        arrFaforites,
+        removeMoviesInFavorite,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );
