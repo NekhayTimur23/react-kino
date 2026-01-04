@@ -2,6 +2,8 @@ import styles from "./NavMenu.module.css";
 import { UserContext } from "../../context/user.context";
 import { useContext } from "react";
 import { NavMenuProps } from "./NavMenu.props";
+import { NavLink } from "react-router-dom";
+import cn from "classnames";
 
 function NavMenu({ exitAccount }: NavMenuProps) {
   const context = useContext(UserContext);
@@ -14,21 +16,29 @@ function NavMenu({ exitAccount }: NavMenuProps) {
     <div className={styles["nav-menu"]}>
       <ul className={styles["nav-menu_list"]}>
         <li>
-          <a href="#">Поиск фильмов</a>
+          <NavLink className={({isActive}) => cn(styles[''],{
+            [styles['active']]: isActive
+          })} to="/">Поиск фильмов</NavLink>
         </li>
         <li>
-          <a href="#">Мои фильмы</a>
+          <NavLink className={({isActive}) => cn(styles[''],{
+            [styles['active']]: isActive
+          })} to="/favofites">Мои фильмы</NavLink>
         </li>
         {userAcc.isLogined && (
           <li>
-            <a href="#">{userAcc.name}</a>
+            <NavLink className={({isActive}) => cn(styles[''],{
+            [styles['active']]: isActive
+          })} to="/">{userAcc.name}</NavLink>
           </li>
         )}
         <li onClick={exitAccount}>
-          <a href="#">
+          <NavLink className={({isActive}) => cn(styles[''],{
+            [styles['active']]: isActive
+          })} to="/login">
             {userAcc.isLogined ? "Выйти" : "Войти"}
             <img src="/exit.svg" />
-          </a>
+          </NavLink>
         </li>
       </ul>
     </div>

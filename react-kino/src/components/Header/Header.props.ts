@@ -1,5 +1,4 @@
-import { HTMLAttributes, ReactNode } from "react";
+import { HTMLAttributes } from "react";
 
 export interface HeaderProps extends HTMLAttributes<HTMLDivElement>{
-    children: ReactNode
 }

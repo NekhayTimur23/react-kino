@@ -5,7 +5,7 @@ function NavLeftSection() {
     <div className={styles["nav-section_left"]}>
       <img
         className={styles["nav-section_logo"]}
-        src="/Bookmark.svg"
+        src="/logo.svg"
         alt="logo"
       />
     </div>
