@@ -9,6 +9,8 @@ import SearchOfMovies from "./pages/SearchOfMovies/SearchOfMovies";
 import { Favofites } from "./pages/Favofites/Favofites";
 import { ErrorSection } from "./pages/Error/ErrorSection";
 import { FilmCard } from "./pages/FilmCard/FilmCard";
+import axios from "axios";
+import { PREFIX, PREFIX2 } from "./helpers/API";
 
 const rootElement = document.getElementById("root");
 
@@ -18,8 +20,13 @@ if (!rootElement) {
 
 const router = createBrowserRouter([
   {
+    id: "root",
     path: "/",
     element: <Layout />,
+    loader: async ({ params }) => {
+      const data = await axios.get(`${PREFIX}/?q=${params}`);
+      return data;
+    },
     children: [
       {
         path: "/",
@@ -30,12 +37,16 @@ const router = createBrowserRouter([
         element: <Authorization />,
       },
       {
-        path: "/favofites",
+        path: "/favorites",
         element: <Favofites />,
       },
       {
-        path: "/movie/:id",
+        path: "/movie/:tt",
         element: <FilmCard />,
+        loader: async ({ params }) => {
+          const data2 = await axios.get(`${PREFIX2}/movie/?tt=${params.tt}`);
+          return data2;
+        },
       },
       {
         path: "*",

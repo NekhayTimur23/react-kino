@@ -4,7 +4,7 @@ import { CardSectionProps } from "./CardSection.props";
 
 function CardSection({ children, className, ...rest }: CardSectionProps) {
   return (
-    <div {...rest} className={cn(styles["card-section"], className)}>
+    <div {...rest} className={cn(className)}>
       {children}
     </div>
   );

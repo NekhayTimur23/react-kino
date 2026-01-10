@@ -11,7 +11,6 @@ export function ButtonVaforite({ id, className }: ButtonVaforiteProps) {
     throw new Error("UserContext must be used within UserProvider");
   }
 
-
   const { addMoviesInFavorite, arrFaforites, removeMoviesInFavorite } = context;
 
   const favorite = arrFaforites.includes(id);
@@ -26,7 +25,7 @@ export function ButtonVaforite({ id, className }: ButtonVaforiteProps) {
       addMoviesInFavorite(id);
     }
   }
-  
+
   return (
     <button
       onClick={addFaforite}

@@ -12,12 +12,29 @@
 }
 
 .content-film {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 80px;
-  height: auto;
-  border-radius: 24px;
+  align-items: start;
+  justify-items: stretch;
+  overflow: hidden;
+  max-width: 100%;
 }
 
+.content-film > .poster {
+  width: 100%;
+  max-width: 480px;
+  justify-self: center;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.content-film > .poster > img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
 
 .content-film > .basic-description {
   display: flex;
@@ -48,7 +65,6 @@
   font-size: 20px;
   line-height: 32px;
   color: #c3c8d4;
-  
 }
 .movie-title > .review-description > p {
   font-weight: 400;
@@ -60,5 +76,5 @@
   font-weight: 400;
   font-size: 20px;
   line-height: 32px;
-  color: #8E95A9;
+  color: #8e95a9;
 }
