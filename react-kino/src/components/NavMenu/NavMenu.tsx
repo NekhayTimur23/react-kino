@@ -23,7 +23,7 @@ function NavMenu({ exitAccount }: NavMenuProps) {
         <li>
           <NavLink className={({isActive}) => cn(styles[''],{
             [styles['active']]: isActive
-          })} to="/favofites">Мои фильмы</NavLink>
+          })} to="/favorites">Мои фильмы</NavLink>
         </li>
         {userAcc.isLogined && (
           <li>

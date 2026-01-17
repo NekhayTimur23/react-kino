@@ -1,6 +1,18 @@
-.link{
-    display: flex;
-    flex-direction: column;
-    cursor: auto;
+.link {
+  display: flex;
+  flex-direction: column;
+  cursor: auto;
 }
 
+.card-section {
+  display: grid;
+  grid-template-columns: repeat(4, 285px);
+  gap: 30px;
+  justify-content: center;
+}
+
+.no-movies {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

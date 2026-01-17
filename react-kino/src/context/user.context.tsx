@@ -8,9 +8,11 @@ interface UserAcc {
 interface UserContextValue {
   userAcc: UserAcc;
   toggleUserAcc: (userName: string) => void;
-  arrFaforites: number[];
-  addMoviesInFavorite: (num: number) => void;
-  removeMoviesInFavorite: (num: number) => void;
+  arrFaforites: string[];
+  addMoviesInFavorite: (num: string) => void;
+  removeMoviesInFavorite: (num: string) => void;
+  searchFilter: string
+  funcSearchFilter: (elem: string) => void;
 }
 
 interface UserProviderProps {
@@ -20,6 +22,7 @@ interface UserProviderProps {
 export const UserContext = createContext<UserContextValue | null>(null);
 
 export const UserProvider = ({ children }: UserProviderProps) => {
+  //стейт по загрузке данных из localStorage
   const [userAcc, setUserAcc] = useState<UserAcc>(() => {
     const dateLocalStorage = localStorage.getItem("logined");
     return dateLocalStorage
@@ -27,14 +30,16 @@ export const UserProvider = ({ children }: UserProviderProps) => {
       : { name: "Тимур", isLogined: false };
   });
 
+  //отправляет изменения в localStorage
+  useEffect(() => {
+    localStorage.setItem("logined", JSON.stringify(userAcc));
+  }, [userAcc]);
+
   //МАССИВ СОХРАНЕНИХ ФИЛЬМОВ
-  const [arrFaforites, setArrFaforites] = useState<number[]>([]);
-
-  
-
+  const [arrFaforites, setArrFaforites] = useState<string[]>([]);
 
   //ФУНКЦИЯ ДОБАВЛЕНИЯ ФИЛЬМОВ В ИЗБРАНОЕ
-  const addMoviesInFavorite = (id: number) => {
+  const addMoviesInFavorite = (id: string) => {
     setArrFaforites((elem) => {
       if (elem.includes(id)) {
         return elem;
@@ -44,21 +49,25 @@ export const UserProvider = ({ children }: UserProviderProps) => {
   };
 
   //ФУНКЦИЯ УДАЛЕНИЯ ФИЛЬМОВ ИЗ ИЗБРАНОГО
-  const removeMoviesInFavorite = (id: number) => {
+  const removeMoviesInFavorite = (id: string) => {
     setArrFaforites((elem) => elem.filter((e) => e != id));
   };
 
-  useEffect(() => {
-    localStorage.setItem("logined", JSON.stringify(userAcc));
-  }, [userAcc]);
-
+  //проверка валидности имени при входе
   const toggleUserAcc = (userName: string) => {
-    console.log(userAcc.name === userName);
     setUserAcc((state) => ({
       ...state,
       isLogined: state.name === userName,
     }));
   };
+
+  const [searchFilter, setSearchFilter] = useState<string>('');
+
+  const funcSearchFilter = (e: string) => {
+    setSearchFilter(e);
+  }
+
+
 
   return (
     <UserContext.Provider
@@ -68,6 +77,8 @@ export const UserProvider = ({ children }: UserProviderProps) => {
         addMoviesInFavorite,
         arrFaforites,
         removeMoviesInFavorite,
+        searchFilter,
+        funcSearchFilter
       }}
     >
       {children}

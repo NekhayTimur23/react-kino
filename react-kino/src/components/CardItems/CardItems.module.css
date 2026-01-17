@@ -1,8 +1,11 @@
 .button-card {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   height: 100%;
   cursor: pointer;
-  border-radius: 12px;
+  border-radius: 8px;
+  padding: 8px;
   background: rgba(32, 40, 62, 0.8);
 }
 
@@ -10,16 +13,27 @@
   background: rgba(48, 60, 88, 0.8);
 }
 
-.movie-poster_img {
-  width: 266px;
+.link-card{
+  display: flex;
+  flex-direction: column;
+}
+
+.movie-poster {
+  display: block;
+  border-radius: 8px;
+  width: 100%;
   height: 400px;
-  margin: 8px;
-  margin-bottom: 0;
+  overflow: hidden;
+
+}
+
+.movie-poster_img {
+  width: 100%;
+  height: 100%;
 }
 
 .description {
-  margin: 16px 8px;
-  padding: 0 8px;
+  padding: 5px ;
 }
 
 .description_title {
@@ -28,5 +42,8 @@
   font-size: 16px;
   line-height: 24px;
   letter-spacing: 2%;
-  margin-bottom: 16px;
+}
+
+.buttonVaforite-card{
+  padding: 0 0 10px 20px;
 }

@@ -1,13 +1,17 @@
 import styles from "./Favofites.module.css";
 import { useContext } from "react";
-import {Title} from "../../components/Title/Title";
+import { Title } from "../../components/Title/Title";
 import { UserContext } from "../../context/user.context";
-import { CARD_ARR } from "../../App.state";
-import CardItemBlock from "../../components/CardItemBlock/CardItemBlock";
 import CardItems from "../../components/CardItems/CardItems";
 import cn from "classnames";
+import { useRouteLoaderData } from "react-router-dom";
+import type { SearchOfMoviesPropsJsonInterface } from "../SearchOfMovies/SearchOfMovies.props";
 
 export function Favofites() {
+  const {
+    data: { description },
+  } = useRouteLoaderData("root") as { data: SearchOfMoviesPropsJsonInterface };
+
   const context = useContext(UserContext);
 
   if (!context) {
@@ -16,7 +20,9 @@ export function Favofites() {
 
   const { arrFaforites } = context;
 
-  const favoriteMovies = CARD_ARR.filter((el) => arrFaforites.includes(el.id));
+  const favoriteMovies = description.filter((el) =>
+    arrFaforites.includes(el["#IMDB_ID"])
+  );
 
   console.log(favoriteMovies);
   return (
@@ -27,14 +33,15 @@ export function Favofites() {
           <p>Список фильмов пуст</p>
         ) : (
           favoriteMovies.map((e) => (
-            <CardItemBlock key={e.id}>
-              <CardItems
-                id={e.id}
-                title={e.title}
-                favorites={e.favorites}
-                poster={e.poster}
-              />
-            </CardItemBlock>
+            <CardItems
+              key={e["#IMDB_ID"]}
+              id={e["#IMDB_ID"]}
+              title={e["#TITLE"]}
+              favorites={e["#RANK"]}
+              alt={e["#TITLE"]}
+              src={e["#IMG_POSTER"]}
+              year={e["#YEAR"]}
+            />
           ))
         )}
       </div>

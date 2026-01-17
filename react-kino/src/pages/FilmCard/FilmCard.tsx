@@ -4,54 +4,71 @@ import { Title } from "../../components/Title/Title";
 import { Grade } from "../../components/Grade/Grade";
 import { ButtonVaforite } from "../../components/ButtonVaforite/ButtonVaforite";
 import { DataMovies } from "../../components/DataMovies/DataMovies";
-import { useParams } from "react-router-dom";
-import { CARD_ARR } from "../../App.state";
-import { ErrorSection } from "../Error/ErrorSection";
+import { useLoaderData, useParams, useRouteLoaderData } from "react-router-dom";
+import { FilmCardProps } from "./FilmCard.props";
+import { SearchOfMoviesPropsJsonInterface } from "../SearchOfMovies/SearchOfMovies.props";
+import { useContext } from "react";
+import { UserContext } from "../../context/user.context";
 
 export function FilmCard() {
-  const { id } = useParams();
+  const context = useContext(UserContext);
 
-  const filmCardArr = CARD_ARR.find((obj) => obj.id === Number(id));
-
-  if (!filmCardArr) {
-    throw new Error("ошибка");
+  if (!context) {
+    throw new Error("UserContext must be used within UserProvider");
   }
+
+  const { userAcc } = context;
+
+  const { tt } = useParams();
+
+  const {
+    data: { description },
+  } = useRouteLoaderData("root") as { data: SearchOfMoviesPropsJsonInterface };
+
+  const filmCardArr = description.find((elem) => elem["#IMDB_ID"] === tt);
+
+  if (!filmCardArr || !tt) {
+    throw new Error("Данные фильма не загрузились!");
+  }
+
+  const {
+    data: { short },
+  } = useLoaderData() as { data: FilmCardProps };
+
+  console.log(short);
 
   return (
     <div className={cn(styles["film-description"])}>
       <div className={cn(styles["movie-title"])}>
         <p>Поиск фильмов</p>
-        <Title size="32">{filmCardArr?.title}</Title>
+        <Title size="32">{filmCardArr?.["#TITLE"]}</Title>
       </div>
       <div className={cn(styles["content-film"])}>
         <div className={cn(styles["poster"])}>
-          <img src={filmCardArr?.poster.src} alt={filmCardArr?.poster.alt} />
+          <img
+            src={filmCardArr?.["#IMG_POSTER"]}
+            alt={filmCardArr?.["#TITLE"]}
+          />
         </div>
         <div className={cn(styles["basic-description"])}>
-          <p>
-            After the devastating events of Avengers: Infinity War, the universe
-            is in ruins due to the efforts of the Mad Titan, Thanos. With the
-            help of remaining allies, the Avengers must assemble once more in
-            order to undo Thanos' actions and restore order to the universe once
-            and for all, no matter what consequences may be in store.
-          </p>
+          <p>{short.description}</p>
           <div className={cn(styles["grade-and-vaforite"])}>
             <Grade
               className={cn(styles["grade-style"])}
               position="relative"
-              favorites={filmCardArr?.favorites}
+              favorites={3}
             />
-            <ButtonVaforite id={filmCardArr?.favorites} />
+            {userAcc.isLogined && <ButtonVaforite id={tt} />}
           </div>
-          <DataMovies textTitle={"Тип"} textDescription={"Movie"} />
+          <DataMovies textTitle={"Тип"} textDescription={short["@type"]} />
           <DataMovies
             textTitle={"Дата выхода"}
-            textDescription={"2019-04-24"}
+            textDescription={short.datePublished}
           />
           <DataMovies textTitle={"Длительность"} textDescription={"181 мин"} />
           <DataMovies
             textTitle={"Жанр"}
-            textDescription={"Adventure,  Science Fiction, Action"}
+            textDescription={short.genre.join(", ")}
           />
         </div>
       </div>

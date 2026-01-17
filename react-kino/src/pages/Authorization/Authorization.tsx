@@ -3,11 +3,18 @@ import cn from "classnames";
 import { Title } from "../../components/Title/Title";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
-import { ChangeEvent, useContext, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useContext, useRef, useState } from "react";
 import { UserContext } from "../../context/user.context";
-import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
+export interface LoginType {
+  email: {
+    value: string;
+  };
+}
 
 function Authorization() {
+  const navigate = useNavigate();
   const context = useContext(UserContext);
 
   if (!context) {
@@ -16,25 +23,16 @@ function Authorization() {
 
   const { userAcc, toggleUserAcc } = context;
 
-  const [value, setValue] = useState("");
-
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  // ФУНКЦИЯ ВВОДА значений в переменную
-  const onChangeFn = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
-  };
-
-  function checkName() {
-    return value === userAcc.name;
-  }
-
-  const checkNames = checkName();
-
   // ФУНКЦИЯ ОТПРАВКИ: вставляет полученые значения в переменные и проверяет значения с именем пользователя.
-  const inputFormFn = () => {
-    if (checkNames) {
-      toggleUserAcc(value);
+  const inputFormFn = (e: FormEvent) => {
+    e.preventDefault();
+    const target = e.target as typeof e.target & LoginType;
+    const { email } = target;
+    if (email.value === userAcc.name) {
+      toggleUserAcc(email.value);
+      navigate("/");
     }
   };
 
@@ -44,17 +42,15 @@ function Authorization() {
         [styles["dispNone"]]: userAcc.isLogined,
       })}
     >
-      <Title>Войти</Title>
-      <Input
-        value={value}
-        onChange={onChangeFn}
-        ref={inputRef}
-        type="text"
-        placeholder="Ваше имя"
-      />
-      <NavLink to={checkNames === true ? "/" : ""}>
-        <Button onClick={inputFormFn}>Войти в профиль</Button>
-      </NavLink>
+      <Title>Войти - Тимур</Title>
+      <form
+        action=""
+        onSubmit={inputFormFn}
+        className={cn(styles["authorization"])}
+      >
+        <Input name="email" ref={inputRef} type="text" placeholder="Ваше имя" />
+        <Button>Войти в профиль</Button>
+      </form>
     </div>
   );
 }
