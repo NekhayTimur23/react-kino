@@ -1,14 +1,13 @@
-import styles from "./Layout.module.css";
+import styles from "./AuthLayout.module.css";
 
-import NavSection from "../components/NavSection/NavSection";
-import NavLeftSection from "../components/NavLeftSection/NavLeftSection";
-import NavRightSection from "../components/NavRightSection/NavRightSection";
+import NavSection from "../../components/NavSection/NavSection";
+import NavLeftSection from "../../components/NavLeftSection/NavLeftSection";
+import NavRightSection from "../../components/NavRightSection/NavRightSection";
 import { useEffect, useContext, useState } from "react";
-import { UserContext } from "../context/user.context";
+import { UserContext } from "../../context/user.context";
 import { Outlet } from "react-router-dom";
-import { FilmCard } from "../pages/FilmCard/FilmCard";
 
-function Layout() {
+function AuthLayout() {
   const context = useContext(UserContext);
 
   if (!context) {
@@ -16,8 +15,6 @@ function Layout() {
   }
 
   const { userAcc, toggleUserAcc } = context;
-
-  const [value, setValue] = useState("");
 
   useEffect(() => {
     localStorage.setItem(
@@ -30,12 +27,11 @@ function Layout() {
   const exitAccount = () => {
     if (userAcc.isLogined) {
       toggleUserAcc("");
-      setValue("");
     }
   };
 
   return (
-    <div className={styles["app"]}>
+    <div className={styles["auth-layout"]}>
       <div>
         <NavSection>
           <NavLeftSection />
@@ -49,4 +45,4 @@ function Layout() {
   );
 }
 
-export default Layout;
+export default AuthLayout;

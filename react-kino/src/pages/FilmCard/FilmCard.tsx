@@ -7,26 +7,35 @@ import { DataMovies } from "../../components/DataMovies/DataMovies";
 import { useLoaderData, useParams, useRouteLoaderData } from "react-router-dom";
 import { FilmCardProps } from "./FilmCard.props";
 import { SearchOfMoviesPropsJsonInterface } from "../SearchOfMovies/SearchOfMovies.props";
+import { useContext } from "react";
+import { UserContext } from "../../context/user.context";
 
 export function FilmCard() {
+  const context = useContext(UserContext);
+
+  if (!context) {
+    throw new Error("UserContext must be used within UserProvider");
+  }
+
+  const { userAcc } = context;
 
   const { tt } = useParams();
 
- const {
+  const {
     data: { description },
-  } = useRouteLoaderData('root') as { data: SearchOfMoviesPropsJsonInterface };
+  } = useRouteLoaderData("root") as { data: SearchOfMoviesPropsJsonInterface };
 
-  const filmCardArr = description.find(elem => elem["#IMDB_ID"] === tt)
+  const filmCardArr = description.find((elem) => elem["#IMDB_ID"] === tt);
 
-  if(!filmCardArr || !tt) {
-    throw new Error('Данные фильма не загрузились!')
+  if (!filmCardArr || !tt) {
+    throw new Error("Данные фильма не загрузились!");
   }
-  
-  const {data: {short}} = useLoaderData() as {data: FilmCardProps};
 
-  console.log(short)
-  
-  
+  const {
+    data: { short },
+  } = useLoaderData() as { data: FilmCardProps };
+
+  console.log(short);
 
   return (
     <div className={cn(styles["film-description"])}>
@@ -36,19 +45,20 @@ export function FilmCard() {
       </div>
       <div className={cn(styles["content-film"])}>
         <div className={cn(styles["poster"])}>
-          <img src={filmCardArr?.["#IMG_POSTER"]} alt={filmCardArr?.["#TITLE"]} />
+          <img
+            src={filmCardArr?.["#IMG_POSTER"]}
+            alt={filmCardArr?.["#TITLE"]}
+          />
         </div>
         <div className={cn(styles["basic-description"])}>
-          <p>
-          {short.description}
-          </p>
+          <p>{short.description}</p>
           <div className={cn(styles["grade-and-vaforite"])}>
             <Grade
               className={cn(styles["grade-style"])}
               position="relative"
               favorites={3}
             />
-            <ButtonVaforite id={tt} />
+            {userAcc.isLogined && <ButtonVaforite id={tt} />}
           </div>
           <DataMovies textTitle={"Тип"} textDescription={short["@type"]} />
           <DataMovies
@@ -58,7 +68,7 @@ export function FilmCard() {
           <DataMovies textTitle={"Длительность"} textDescription={"181 мин"} />
           <DataMovies
             textTitle={"Жанр"}
-            textDescription={short.genre.join(', ')}
+            textDescription={short.genre.join(", ")}
           />
         </div>
       </div>
