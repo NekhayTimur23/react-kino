@@ -3,50 +3,42 @@ import cn from "classnames";
 import Header from "../../components/Header/Header";
 import CardSection from "../../components/CardSection/CardSection";
 import CardItems from "../../components/CardItems/CardItems";
-import { useRouteLoaderData } from "react-router-dom";
-import { SearchOfMoviesPropsJsonInterface } from "./SearchOfMovies.props";
-import { useContext, useMemo } from "react";
-import { UserContext } from "../../context/user.context";
+import { useEffect } from "react";
 import { Title } from "../../components/Title/Title";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootStoreApp } from "../../store/store";
+import { getMovie } from "../../store/movie.slice";
 
 function SearchOfMovies() {
-  const {
-    data: { description },
-  } = useRouteLoaderData("root") as { data: SearchOfMoviesPropsJsonInterface };
+  const dispatch = useDispatch<AppDispatch>();
+  const description = Object.values(useSelector((s: RootStoreApp) => s.movie.movies));
+  const searchFilter = useSelector(
+    (s: RootStoreApp) => s.movie.nameSearchMovie,
+  );
 
-  const context = useContext(UserContext);
+  useEffect(() => {
+    dispatch(getMovie(searchFilter || "Spider-Man"));
+  }, [searchFilter]);
 
-  if (!context) {
-    throw new Error("Контекст не загрузился");
-  }
-
-  const { searchFilter } = context;
-
-  const filteredMovies = useMemo(() => {
-    if (!searchFilter) return description;
-
-    const normalizedFilter = searchFilter.trim().toUpperCase();
-
-    return description.filter((movie) =>
-      movie["#TITLE"].toUpperCase().includes(normalizedFilter)
-    );
-  }, [searchFilter, description]);
+  
 
   return (
     <div className={styles["link"]}>
       <Header />
-      <CardSection className={cn(styles["card-section"], {
-		[styles["no-movies"]] : filteredMovies.length === 0
-	  })}>
-        {filteredMovies.length === 0 ? (
-          <div className={cn(styles['no-movies'])}>
+      <CardSection
+        className={cn(styles["card-section"], {
+          [styles["no-movies"]]: description.length === 0,
+        })}
+      >
+        {description.length === 0 ? (
+          <div className={cn(styles["no-movies"])}>
             <Title>Упс... Ничего не найдено</Title>
             <p>
               Попробуйте изменить запрос или ввести более точное название фильма
             </p>
           </div>
         ) : (
-          filteredMovies.map((e) => {
+          description.map((e) => {
             return (
               <CardItems
                 key={e["#IMDB_ID"]}

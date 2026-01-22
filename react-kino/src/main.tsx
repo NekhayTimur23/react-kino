@@ -1,6 +1,5 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { UserProvider } from "./context/user.context";
 import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Authorization from "./pages/Authorization/Authorization";
@@ -8,11 +7,11 @@ import SearchOfMovies from "./pages/SearchOfMovies/SearchOfMovies";
 import { Favofites } from "./pages/Favofites/Favofites";
 import { ErrorSection } from "./pages/Error/ErrorSection";
 import { FilmCard } from "./pages/FilmCard/FilmCard";
-import axios from "axios";
-import { PREFIX, PREFIX2 } from "./helpers/API";
 import Layout from "./layout/Layout/Layout";
 import { RequireAuth } from "./helpers/RequireAuth";
 import AuthLayout from "./layout/Auth/AuthLayout";
+import { Provider } from "react-redux";
+import { store } from "./store/store";
 
 const rootElement = document.getElementById("root");
 
@@ -29,10 +28,6 @@ const router = createBrowserRouter([
         <Layout />
       </RequireAuth>
     ),
-    loader: async ({ params }) => {
-      const data = await axios.get(`${PREFIX}/?q=${params}`);
-      return data;
-    },
     children: [
       {
         path: "/",
@@ -44,11 +39,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/movie/:tt",
-        element: <FilmCard />,
-        loader: async ({ params }) => {
-          const data2 = await axios.get(`${PREFIX2}/movie/?tt=${params.tt}`);
-          return data2;
-        },
+        element: <FilmCard />
       },
       {
         path: "*",
@@ -60,7 +51,6 @@ const router = createBrowserRouter([
     path: "/auth",
     element: <AuthLayout />,
     children: [
-      
       {
         path: "login",
         element: <Authorization />,
@@ -71,8 +61,8 @@ const router = createBrowserRouter([
 
 createRoot(rootElement).render(
   <StrictMode>
-    <UserProvider>
-      <RouterProvider router={router} />
-    </UserProvider>
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
   </StrictMode>,
 );

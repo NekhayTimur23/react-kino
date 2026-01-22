@@ -4,51 +4,54 @@ import { Title } from "../../components/Title/Title";
 import { Grade } from "../../components/Grade/Grade";
 import { ButtonVaforite } from "../../components/ButtonVaforite/ButtonVaforite";
 import { DataMovies } from "../../components/DataMovies/DataMovies";
-import { useLoaderData, useParams, useRouteLoaderData } from "react-router-dom";
-import { FilmCardProps } from "./FilmCard.props";
-import { SearchOfMoviesPropsJsonInterface } from "../SearchOfMovies/SearchOfMovies.props";
-import { useContext } from "react";
-import { UserContext } from "../../context/user.context";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootStoreApp } from "../../store/store";
+import { ErrorSection } from "../Error/ErrorSection";
+import { useEffect } from "react";
+import { getDiscription } from "../../store/movie.slice";
 
 export function FilmCard() {
-  const context = useContext(UserContext);
+  const { tt } = useParams<{ tt: string }>();
+  const dispatch = useDispatch<AppDispatch>();
 
-  if (!context) {
-    throw new Error("UserContext must be used within UserProvider");
+  const movie = useSelector((s: RootStoreApp) => s.movie.movies);
+  const favorites = useSelector((s: RootStoreApp) => s.movie.arrFaforites);
+  const temporelDiscription = useSelector(
+    (s: RootStoreApp) => s.movie.temporelDiscription,
+  );
+
+  console.log("temporelDiscription", temporelDiscription);
+
+  if (!tt) {
+    return <ErrorSection />;
   }
 
-  const { userAcc } = context;
+  useEffect(() => {
+    dispatch(getDiscription({ tt }));
+  }, [dispatch, tt]);
 
-  const { tt } = useParams();
+  const movieDiscription = useSelector(
+    (s: RootStoreApp) => s.movie.movieDiscription,
+  );
 
-  const {
-    data: { description },
-  } = useRouteLoaderData("root") as { data: SearchOfMoviesPropsJsonInterface };
+  const currentFilms = favorites[tt] ?? movie[tt];
 
-  const filmCardArr = description.find((elem) => elem["#IMDB_ID"] === tt);
+  const short = movieDiscription[tt] ?? temporelDiscription[tt];
 
-  if (!filmCardArr || !tt) {
-    throw new Error("Данные фильма не загрузились!");
+  if (!currentFilms || !short) {
+    return <>Загрузка...</>;
   }
-
-  const {
-    data: { short },
-  } = useLoaderData() as { data: FilmCardProps };
-
-  console.log(short);
 
   return (
     <div className={cn(styles["film-description"])}>
       <div className={cn(styles["movie-title"])}>
         <p>Поиск фильмов</p>
-        <Title size="32">{filmCardArr?.["#TITLE"]}</Title>
+        <Title size="32">{currentFilms["#TITLE"]}</Title>
       </div>
       <div className={cn(styles["content-film"])}>
         <div className={cn(styles["poster"])}>
-          <img
-            src={filmCardArr?.["#IMG_POSTER"]}
-            alt={filmCardArr?.["#TITLE"]}
-          />
+          <img src={currentFilms["#IMG_POSTER"]} alt={currentFilms["#TITLE"]} />
         </div>
         <div className={cn(styles["basic-description"])}>
           <p>{short.description}</p>
@@ -58,7 +61,7 @@ export function FilmCard() {
               position="relative"
               favorites={3}
             />
-            {userAcc.isLogined && <ButtonVaforite id={tt} />}
+            <ButtonVaforite id={tt} />
           </div>
           <DataMovies textTitle={"Тип"} textDescription={short["@type"]} />
           <DataMovies
