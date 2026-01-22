@@ -10,15 +10,14 @@ export const store = configureStore({
   },
 });
 
-// function seveState<T>(key: string, state: T) {
-//   const stringState = JSON.stringify(state);
-//   localStorage.setItem(key, stringState);
-// }
+function seveState<T>(key: string, state: T) {
+  const stringState = JSON.stringify(state);
+  localStorage.setItem(key, stringState);
+}
 
-// store.subscribe(() => {
-//   seveState(KEY_LOC, store.getState().user.userName);
-// });
-
+store.subscribe(() => {
+  seveState(store.getState().user.userName.name, store.getState().movie.arrFaforites);
+});
 
 export type RootStoreApp = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
