@@ -2,7 +2,9 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import { PREFIX, PREFIX2 } from "../helpers/API";
 import { JsonInterfaceShort } from "../pages/FilmCard/FilmCard.props";
-import { IinitialState, KEY_LOC } from "./user.slice";
+import { IinitialState } from "./user.slice";
+import { FAVORITE_KEY, validArrFaforites } from "./storage";
+import { RootStoreApp } from "./store";
 
 export interface SearchOfMoviesProps {
   "#ACTORS": string;
@@ -27,6 +29,10 @@ export interface SearchOfMoviesPropsJsonInterface {
 export interface IGetDiscription {
   imdbId: string;
   short: JsonInterfaceShort;
+}
+
+export interface INameFavorite {
+  favorites_$Timur: IinitialState
 }
 
 export interface FavoriteItem {
@@ -93,6 +99,9 @@ export const movieSlice = createSlice({
     addFavoriteMovies: (state, action: PayloadAction<SearchOfMoviesProps>) => {
       const id = action.payload["#IMDB_ID"];
       state.arrFaforites[id] = action.payload;
+    },
+    addFromLocalStorageInFavorite: (state, action: PayloadAction<SearchOfMoviesProps>) => {
+      
     },
     deleteFavoriteMovies: (state, action: PayloadAction<string>) => {
       delete state.arrFaforites[action.payload];

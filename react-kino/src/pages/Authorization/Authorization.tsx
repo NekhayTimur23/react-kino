@@ -33,7 +33,6 @@ function Authorization() {
     const { email } = target;
 
     if (email.value === userName.name) {
-      console.log("1", userName);
       dispatch(userActions.enterSite());
       navigate("/");
     }

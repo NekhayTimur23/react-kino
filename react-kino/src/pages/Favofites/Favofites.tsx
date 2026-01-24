@@ -2,21 +2,35 @@ import styles from "./Favofites.module.css";
 import { Title } from "../../components/Title/Title";
 import CardItems from "../../components/CardItems/CardItems";
 import cn from "classnames";
-import { useSelector } from "react-redux";
-import { RootStoreApp } from "../../store/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootStoreApp } from "../../store/store";
+import { validArrFaforites } from "../../store/storage";
 
 export function Favofites() {
   const description = useSelector((s: RootStoreApp) => s.movie.arrFaforites);
-  const uniqueFilms = Object.values(description).reverse();
+  const userName = useSelector((s: RootStoreApp) => s.user.userName.name);
+  const dispatch = useDispatch<AppDispatch>();
+
+  function nameValidWW() {
+    const uniqueFilms = Object.values(description).reverse();
+    const newFavorite = validArrFaforites(userName);
+    if (!newFavorite) {
+      return uniqueFilms;
+    }
+    return Object.values(newFavorite).reverse();
+  }
+
+
+  console.log("Favofites- name ", validArrFaforites(userName));
 
   return (
     <div>
       <Title>Избранное</Title>
       <div className={cn(styles["card-section"])}>
-        {uniqueFilms.length === 0 ? (
+        {nameValidWW().length === 0 ? (
           <p>Список фильмов пуст</p>
         ) : (
-          uniqueFilms.map((e) => (
+          nameValidWW().map((e) => (
             <CardItems
               key={e["#IMDB_ID"]}
               id={e["#IMDB_ID"]}

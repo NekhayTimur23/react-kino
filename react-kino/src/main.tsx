@@ -21,7 +21,6 @@ if (!rootElement) {
 
 const router = createBrowserRouter([
   {
-    id: "root",
     path: "/",
     element: (
       <RequireAuth>
@@ -39,7 +38,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/movie/:tt",
-        element: <FilmCard />
+        element: <FilmCard />,
       },
       {
         path: "*",
@@ -61,8 +60,8 @@ const router = createBrowserRouter([
 
 createRoot(rootElement).render(
   <StrictMode>
-      <Provider store={store}>
-        <RouterProvider router={router} />
-      </Provider>
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </StrictMode>,
 );

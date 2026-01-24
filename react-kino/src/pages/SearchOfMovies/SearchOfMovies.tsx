@@ -11,7 +11,9 @@ import { getMovie } from "../../store/movie.slice";
 
 function SearchOfMovies() {
   const dispatch = useDispatch<AppDispatch>();
-  const description = Object.values(useSelector((s: RootStoreApp) => s.movie.movies));
+  const description = Object.values(
+    useSelector((s: RootStoreApp) => s.movie.movies),
+  );
   const searchFilter = useSelector(
     (s: RootStoreApp) => s.movie.nameSearchMovie,
   );
@@ -19,8 +21,6 @@ function SearchOfMovies() {
   useEffect(() => {
     dispatch(getMovie(searchFilter || "Spider-Man"));
   }, [searchFilter]);
-
-  
 
   return (
     <div className={styles["link"]}>

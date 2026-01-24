@@ -18,6 +18,7 @@ const initialState: IinitialState2 = {
   },
 };
 
+//функция получения логина из localStorage
 export const getLogin = createAsyncThunk<IinitialState>(
   "auth/login/addLogin",
   async () => {
@@ -38,8 +39,6 @@ export const getLogin = createAsyncThunk<IinitialState>(
   },
 );
 
-// export const 
-
 export const userSlice = createSlice({
   name: "user",
   initialState,
@@ -49,7 +48,6 @@ export const userSlice = createSlice({
         state.userName.isLogined = true;
         const stringState = JSON.stringify(state.userName);
         localStorage.setItem(KEY_LOC, stringState);
-        console.log("enterSite сработал");
       }
     },
     exitSite: (state) => {
@@ -57,7 +55,6 @@ export const userSlice = createSlice({
         state.userName.isLogined = false;
         const stringState = JSON.stringify(state.userName);
         localStorage.setItem(KEY_LOC, stringState);
-        console.log("exitSite сработал");
       }
     },
   },

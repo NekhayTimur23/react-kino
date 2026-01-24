@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import movieSlice from "./movie.slice";
-import userSlice, { KEY_LOC } from "./user.slice";
-// import { seveState } from "./storage";
+import userSlice from "./user.slice";
+import { FAVORITE_KEY, seveState } from "./storage";
 
 export const store = configureStore({
   reducer: {
@@ -10,13 +10,12 @@ export const store = configureStore({
   },
 });
 
-function seveState<T>(key: string, state: T) {
-  const stringState = JSON.stringify(state);
-  localStorage.setItem(key, stringState);
-}
-
 store.subscribe(() => {
-  seveState(store.getState().user.userName.name, store.getState().movie.arrFaforites);
+  if (store.getState().user.userName.name.length > 0)
+    seveState(
+      FAVORITE_KEY(store.getState().user.userName.name),
+      store.getState().movie.arrFaforites,
+    );
 });
 
 export type RootStoreApp = ReturnType<typeof store.getState>;

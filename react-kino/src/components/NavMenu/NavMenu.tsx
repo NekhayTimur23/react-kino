@@ -17,7 +17,6 @@ function NavMenu() {
     dispatch(userActions.exitSite());
   };
 
-
   return (
     <div className={styles["nav-menu"]}>
       <ul className={styles["nav-menu_list"]}>
@@ -43,7 +42,7 @@ function NavMenu() {
             to="/favorites"
           >
             Мои фильмы
-            {arrFaforites.length > 0 && (
+            {userName.isLogined && arrFaforites.length > 0 && (
               <div className={styles["span-favorites"]}>
                 {`${arrFaforites.length}`}
               </div>
@@ -71,7 +70,7 @@ function NavMenu() {
                 [styles["active"]]: isActive,
               })
             }
-            to="/login"
+            to="/auth/login"
           >
             {userName.isLogined ? "Выйти" : "Войти"}
             <img src="/exit.svg" />

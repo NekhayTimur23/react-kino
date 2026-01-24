@@ -21,8 +21,6 @@ export function FilmCard() {
     (s: RootStoreApp) => s.movie.temporelDiscription,
   );
 
-  console.log("temporelDiscription", temporelDiscription);
-
   if (!tt) {
     return <ErrorSection />;
   }
