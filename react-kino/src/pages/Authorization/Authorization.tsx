@@ -3,9 +3,11 @@ import cn from "classnames";
 import { Title } from "../../components/Title/Title";
 import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
-import { ChangeEvent, FormEvent, useContext, useRef, useState } from "react";
-import { UserContext } from "../../context/user.context";
+import { FormEvent, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootStoreApp } from "../../store/store";
+import { getLogin, userActions } from "../../store/user.slice";
 
 export interface LoginType {
   email: {
@@ -15,23 +17,23 @@ export interface LoginType {
 
 function Authorization() {
   const navigate = useNavigate();
-  const context = useContext(UserContext);
-
-  if (!context) {
-    throw new Error("UserContext must be used within UserProvider");
-  }
-
-  const { userAcc, toggleUserAcc } = context;
-
+  const dispatch = useDispatch<AppDispatch>();
   const inputRef = useRef<HTMLInputElement | null>(null);
 
-  // ФУНКЦИЯ ОТПРАВКИ: вставляет полученые значения в переменные и проверяет значения с именем пользователя.
+  const userName = useSelector((s: RootStoreApp) => s.user.userName);
+
+  useEffect(() => {
+    dispatch(getLogin());
+  }, []);
+
+  //ФУНКЦИЯ ОТПРАВКИ: вставляет полученые значения в переменные и проверяет значения с именем пользователя.
   const inputFormFn = (e: FormEvent) => {
     e.preventDefault();
     const target = e.target as typeof e.target & LoginType;
     const { email } = target;
-    if (email.value === userAcc.name) {
-      toggleUserAcc(email.value);
+
+    if (email.value === userName.name) {
+      dispatch(userActions.enterSite());
       navigate("/");
     }
   };
@@ -39,7 +41,7 @@ function Authorization() {
   return (
     <div
       className={cn(styles["authorization"], {
-        [styles["dispNone"]]: userAcc.isLogined,
+        [styles["dispNone"]]: userName.isLogined,
       })}
     >
       <Title>Войти - Тимур</Title>

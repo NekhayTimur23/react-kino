@@ -1,21 +1,25 @@
-import { ReactNode, useContext } from "react";
+import { ReactNode } from "react";
 import { Navigate } from "react-router-dom";
-import { UserContext } from "../context/user.context";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../store/store";
+import { getLogin, IinitialState, KEY_LOC } from "../store/user.slice";
 
 export const RequireAuth = ({ children }: { children: ReactNode }) => {
-  const context = useContext(UserContext);
 
-  if (!context) {
-    throw new Error("UserContext must be used within UserProvider");
+  const data = localStorage.getItem(KEY_LOC);
+  const dispatch = useDispatch<AppDispatch>();
+
+  if (!data) {
+    dispatch(getLogin());
+    return;
   }
+  
+  const userName = JSON.parse(data) as IinitialState ;
 
-  const { userAcc } = context;
+  // const userName = useSelector((s: RootStoreApp) => s.user.userName);
 
-
-  const jwt = userAcc.isLogined;
-  if (!jwt) {
+  if (!userName.isLogined) {
     return <Navigate to={"/auth/login"} replace />;
   }
   return children;
-
 };

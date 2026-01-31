@@ -1,38 +1,25 @@
 import styles from "./Favofites.module.css";
-import { useContext } from "react";
 import { Title } from "../../components/Title/Title";
-import { UserContext } from "../../context/user.context";
 import CardItems from "../../components/CardItems/CardItems";
 import cn from "classnames";
-import { useRouteLoaderData } from "react-router-dom";
-import type { SearchOfMoviesPropsJsonInterface } from "../SearchOfMovies/SearchOfMovies.props";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootStoreApp } from "../../store/store";
+import { FAVORITE_KEY, validArrFaforites } from "../../store/storage";
+import { movieActions } from "../../store/movie.slice";
 
 export function Favofites() {
-  const {
-    data: { description },
-  } = useRouteLoaderData("root") as { data: SearchOfMoviesPropsJsonInterface };
+  const description = useSelector((s: RootStoreApp) => s.movie.arrFaforites);
 
-  const context = useContext(UserContext);
+  const uniqueFilms = Object.values(description).reverse();
 
-  if (!context) {
-    throw new Error("Ошибка");
-  }
-
-  const { arrFaforites } = context;
-
-  const favoriteMovies = description.filter((el) =>
-    arrFaforites.includes(el["#IMDB_ID"])
-  );
-
-  console.log(favoriteMovies);
   return (
     <div>
       <Title>Избранное</Title>
       <div className={cn(styles["card-section"])}>
-        {favoriteMovies.length === 0 ? (
+        {uniqueFilms.length === 0 ? (
           <p>Список фильмов пуст</p>
         ) : (
-          favoriteMovies.map((e) => (
+          uniqueFilms.map((e) => (
             <CardItems
               key={e["#IMDB_ID"]}
               id={e["#IMDB_ID"]}

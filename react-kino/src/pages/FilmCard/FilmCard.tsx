@@ -4,68 +4,78 @@ import { Title } from "../../components/Title/Title";
 import { Grade } from "../../components/Grade/Grade";
 import { ButtonVaforite } from "../../components/ButtonVaforite/ButtonVaforite";
 import { DataMovies } from "../../components/DataMovies/DataMovies";
-import { useLoaderData, useParams, useRouteLoaderData } from "react-router-dom";
-import { FilmCardProps } from "./FilmCard.props";
-import { SearchOfMoviesPropsJsonInterface } from "../SearchOfMovies/SearchOfMovies.props";
-import { useContext } from "react";
-import { UserContext } from "../../context/user.context";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootStoreApp } from "../../store/store";
+import { ErrorSection } from "../Error/ErrorSection";
+import { useEffect } from "react";
+import { getDiscription } from "../../store/movie.slice";
 
 export function FilmCard() {
-  const context = useContext(UserContext);
+  const { tt } = useParams<{ tt: string }>();
+  const dispatch = useDispatch<AppDispatch>();
 
-  if (!context) {
-    throw new Error("UserContext must be used within UserProvider");
+  const movie = useSelector((s: RootStoreApp) => s.movie.movies);
+  const favorites = useSelector((s: RootStoreApp) => s.movie.arrFaforites);
+  const temporelDiscription = useSelector(
+    (s: RootStoreApp) => s.movie.temporelDiscription,
+  );
+
+  console.log("temporelDiscription", temporelDiscription);
+
+  if (!tt) {
+    return <ErrorSection />;
   }
 
-  const { userAcc } = context;
+  useEffect(() => {
+    dispatch(getDiscription({ tt }));
+  }, [dispatch, tt]);
 
-  const { tt } = useParams();
+  const movieDiscription = useSelector(
+    (s: RootStoreApp) => s.movie.movieDiscription,
+  );
 
-  const {
-    data: { description },
-  } = useRouteLoaderData("root") as { data: SearchOfMoviesPropsJsonInterface };
+  const currentFilms = favorites[tt] ?? movie[tt];
 
-  const filmCardArr = description.find((elem) => elem["#IMDB_ID"] === tt);
+  const short = movieDiscription[tt] ?? temporelDiscription[tt];
 
-  if (!filmCardArr || !tt) {
-    throw new Error("Данные фильма не загрузились!");
+  if (!currentFilms || !short) {
+    return <>Загрузка...</>;
   }
 
-  const {
-    data: { short },
-  } = useLoaderData() as { data: FilmCardProps };
-
-  console.log(short);
+  const duration = () => {
+    const dur = short.duration;
+    const hours = Number(dur.match(/(\d+)H/)?.[1] ?? 0);
+    const minutes = Number(dur.match(/(\d+)M/)?.[1] ?? 0);
+    return `${hours} ч ${minutes} мин`;
+  };
 
   return (
     <div className={cn(styles["film-description"])}>
       <div className={cn(styles["movie-title"])}>
         <p>Поиск фильмов</p>
-        <Title size="32">{filmCardArr?.["#TITLE"]}</Title>
+        <Title size="32">{currentFilms["#TITLE"]}</Title>
       </div>
       <div className={cn(styles["content-film"])}>
         <div className={cn(styles["poster"])}>
-          <img
-            src={filmCardArr?.["#IMG_POSTER"]}
-            alt={filmCardArr?.["#TITLE"]}
-          />
+          <img src={currentFilms["#IMG_POSTER"]} alt={currentFilms["#TITLE"]} />
         </div>
         <div className={cn(styles["basic-description"])}>
-          <p>{short.description}</p>
+          <p>{short.description} --</p>
           <div className={cn(styles["grade-and-vaforite"])}>
             <Grade
               className={cn(styles["grade-style"])}
               position="relative"
-              favorites={3}
+              favorites={short.aggregateRating.ratingValue}
             />
-            {userAcc.isLogined && <ButtonVaforite id={tt} />}
+            <ButtonVaforite id={tt} />
           </div>
           <DataMovies textTitle={"Тип"} textDescription={short["@type"]} />
           <DataMovies
             textTitle={"Дата выхода"}
             textDescription={short.datePublished}
           />
-          <DataMovies textTitle={"Длительность"} textDescription={"181 мин"} />
+          <DataMovies textTitle={"Длительность"} textDescription={duration()} />
           <DataMovies
             textTitle={"Жанр"}
             textDescription={short.genre.join(", ")}
@@ -77,17 +87,11 @@ export function FilmCard() {
         <p>Отзывы</p>
         <div className={cn(styles["movie-title"])}>
           <div className={cn(styles["review-description"])}>
-            <h3>Not as good as infinity war..</h3>
-            <p>2019-04-29</p>
+            <h3>{short.review.name}</h3>
+            <p>{short.review.dateCreated}</p>
           </div>
           <div className={cn(styles["text-review"])}>
-            But its a pretty good film. A bit of a mess in some parts, lacking
-            the cohesive and effortless feel infinity war somehow managed to
-            accomplish. Some silly plot holes and characters that could&apos;ve
-            been cut (Ahem, captain marvel and thanos). The use of Captain
-            marvel in this film was just ridiculous. Shes there at the start,
-            bails for some reason? And then pops up at the end to serve no
-            purpose but deux ex machina a space ship...
+            {short.review.reviewBody}
           </div>
         </div>
       </div>

@@ -2,17 +2,13 @@ import styles from "./InputSearchForm.module.css";
 import Button from "../Button/Button";
 import Input from "../Input/Input";
 import { ChangeEvent, FormEvent, useContext, useState } from "react";
-import { UserContext } from "../../context/user.context";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../store/store";
+import { movieActions } from "../../store/movie.slice";
 
 function InputSearchForm() {
-  const context = useContext(UserContext);
 
-  if (!context) {
-    throw new Error("Контекст не загрузился");
-  }
-
-  const { funcSearchFilter } = context;
-
+  const dispatch = useDispatch<AppDispatch>()
   const [inputData, setInputData] = useState("");
 
   const inputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -21,7 +17,7 @@ function InputSearchForm() {
 
   const formSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    funcSearchFilter(inputData);
+    dispatch(movieActions.addNameSearchMovie(inputData))
     setInputData("");
   };
 
