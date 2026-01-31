@@ -48,7 +48,7 @@ export function ButtonVaforite({ id, className }: ButtonVaforiteProps) {
           [styles["favotire_button-on"]]: favoriteBoolean,
         })}
       >
-        {favoriteBoolean ? "B избраное" : "В избраном"}
+        {favoriteBoolean ? "B избранное" : "В избранном"}
       </p>
     </button>
   );
