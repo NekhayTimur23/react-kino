@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { loadState } from "./storage";
 
 export const KEY_LOC = "Login";
 
@@ -12,7 +13,7 @@ export interface IinitialState2 {
 }
 
 const initialState: IinitialState2 = {
-  userName: {
+  userName: loadState(KEY_LOC) ?? {
     name: "",
     isLogined: false,
   },
@@ -29,12 +30,9 @@ export const getLogin = createAsyncThunk<IinitialState>(
         name: "Тимур",
         isLogined: false,
       };
-
       localStorage.setItem(KEY_LOC, JSON.stringify(userData));
-
       return userData;
     }
-
     return JSON.parse(data) as IinitialState;
   },
 );

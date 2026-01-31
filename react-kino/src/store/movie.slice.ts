@@ -2,9 +2,42 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import { PREFIX, PREFIX2 } from "../helpers/API";
 import { JsonInterfaceShort } from "../pages/FilmCard/FilmCard.props";
-import { IinitialState } from "./user.slice";
-import { FAVORITE_KEY, validArrFaforites } from "./storage";
+import { IinitialState, KEY_LOC } from "./user.slice";
+import { FAVORITE_KEY, loadState, validArrFaforites } from "./storage";
 import { RootStoreApp } from "./store";
+
+
+interface JsonInterfaceReview {
+  "@type": string;
+  itemReviewed: JsonInterfaceReviewItemReviewed;
+  author: JsonInterfaceReviewAuthor;
+  dateCreated: string;
+  inLanguage: string;
+  name: string;
+  reviewBody: string;
+  reviewRating: JsonInterfaceReviewReviewRating;
+}
+
+interface JsonInterfaceReviewAuthor {
+  "@type": string;
+  name: string;
+}
+
+interface JsonInterfaceReviewItemReviewed {
+  "@type": string;
+  url: string;
+}
+
+interface JsonInterfaceReviewReviewRating {
+  "@type": string;
+  worstRating: number;
+  bestRating: number;
+  ratingValue: number;
+}
+
+export interface JsonInterface {
+  review: JsonInterfaceReview;
+}
 
 export interface SearchOfMoviesProps {
   "#ACTORS": string;
@@ -32,7 +65,7 @@ export interface IGetDiscription {
 }
 
 export interface INameFavorite {
-  favorites_$Timur: IinitialState
+  favorites_$Timur: IinitialState;
 }
 
 export interface FavoriteItem {
@@ -42,6 +75,8 @@ export interface FavoriteItem {
   movieDiscription: Record<string, JsonInterfaceShort>;
   temporelDiscription: Record<string, JsonInterfaceShort>;
 }
+
+const userName = loadState(KEY_LOC);
 
 const initialState: FavoriteItem = {
   arrFaforites: {},
@@ -88,6 +123,17 @@ export const getDiscription = createAsyncThunk<
   return thunkAPI.rejectWithValue("Неизвестная ошибка!");
 });
 
+export const loadFavorite = createAsyncThunk<
+  Record<string, SearchOfMoviesProps>,
+  void,
+  { state: RootStoreApp }
+>("movie/loadFavorite", async (_, { getState }) => {
+  const state = getState();
+  const userName = state.user.userName.name;
+  if (!userName) return {};
+  const data = localStorage.getItem(FAVORITE_KEY(userName));
+  return data ? JSON.parse(data) : {};
+});
 
 export const movieSlice = createSlice({
   name: "movie",
@@ -99,9 +145,6 @@ export const movieSlice = createSlice({
     addFavoriteMovies: (state, action: PayloadAction<SearchOfMoviesProps>) => {
       const id = action.payload["#IMDB_ID"];
       state.arrFaforites[id] = action.payload;
-    },
-    addFromLocalStorageInFavorite: (state, action: PayloadAction<SearchOfMoviesProps>) => {
-      
     },
     deleteFavoriteMovies: (state, action: PayloadAction<string>) => {
       delete state.arrFaforites[action.payload];
@@ -127,6 +170,9 @@ export const movieSlice = createSlice({
         state.movieDiscription[action.payload.imdbId] = action.payload.short;
       },
     );
+    builder.addCase(loadFavorite.fulfilled, (state, action) => {
+      state.arrFaforites = action.payload;
+    });
   },
 });
 

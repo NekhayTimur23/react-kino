@@ -4,33 +4,22 @@ import CardItems from "../../components/CardItems/CardItems";
 import cn from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootStoreApp } from "../../store/store";
-import { validArrFaforites } from "../../store/storage";
+import { FAVORITE_KEY, validArrFaforites } from "../../store/storage";
+import { movieActions } from "../../store/movie.slice";
 
 export function Favofites() {
   const description = useSelector((s: RootStoreApp) => s.movie.arrFaforites);
-  const userName = useSelector((s: RootStoreApp) => s.user.userName.name);
-  const dispatch = useDispatch<AppDispatch>();
 
-  function nameValidWW() {
-    const uniqueFilms = Object.values(description).reverse();
-    const newFavorite = validArrFaforites(userName);
-    if (!newFavorite) {
-      return uniqueFilms;
-    }
-    return Object.values(newFavorite).reverse();
-  }
-
-
-  console.log("Favofites- name ", validArrFaforites(userName));
+  const uniqueFilms = Object.values(description).reverse();
 
   return (
     <div>
       <Title>Избранное</Title>
       <div className={cn(styles["card-section"])}>
-        {nameValidWW().length === 0 ? (
+        {uniqueFilms.length === 0 ? (
           <p>Список фильмов пуст</p>
         ) : (
-          nameValidWW().map((e) => (
+          uniqueFilms.map((e) => (
             <CardItems
               key={e["#IMDB_ID"]}
               id={e["#IMDB_ID"]}

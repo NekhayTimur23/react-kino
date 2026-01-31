@@ -11,11 +11,12 @@ export const store = configureStore({
 });
 
 store.subscribe(() => {
-  if (store.getState().user.userName.name.length > 0)
-    seveState(
-      FAVORITE_KEY(store.getState().user.userName.name),
-      store.getState().movie.arrFaforites,
-    );
+  const userName = store.getState().user.userName.name;
+  if (!userName) return;
+  seveState(
+    FAVORITE_KEY(store.getState().user.userName.name),
+    store.getState().movie.arrFaforites,
+  );
 });
 
 export type RootStoreApp = ReturnType<typeof store.getState>;

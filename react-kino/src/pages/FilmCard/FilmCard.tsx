@@ -21,6 +21,8 @@ export function FilmCard() {
     (s: RootStoreApp) => s.movie.temporelDiscription,
   );
 
+  console.log("temporelDiscription", temporelDiscription);
+
   if (!tt) {
     return <ErrorSection />;
   }
@@ -41,6 +43,13 @@ export function FilmCard() {
     return <>Загрузка...</>;
   }
 
+  const duration = () => {
+    const dur = short.duration;
+    const hours = Number(dur.match(/(\d+)H/)?.[1] ?? 0);
+    const minutes = Number(dur.match(/(\d+)M/)?.[1] ?? 0);
+    return `${hours} ч ${minutes} мин`;
+  };
+
   return (
     <div className={cn(styles["film-description"])}>
       <div className={cn(styles["movie-title"])}>
@@ -52,12 +61,12 @@ export function FilmCard() {
           <img src={currentFilms["#IMG_POSTER"]} alt={currentFilms["#TITLE"]} />
         </div>
         <div className={cn(styles["basic-description"])}>
-          <p>{short.description}</p>
+          <p>{short.description} --</p>
           <div className={cn(styles["grade-and-vaforite"])}>
             <Grade
               className={cn(styles["grade-style"])}
               position="relative"
-              favorites={3}
+              favorites={short.aggregateRating.ratingValue}
             />
             <ButtonVaforite id={tt} />
           </div>
@@ -66,7 +75,7 @@ export function FilmCard() {
             textTitle={"Дата выхода"}
             textDescription={short.datePublished}
           />
-          <DataMovies textTitle={"Длительность"} textDescription={"181 мин"} />
+          <DataMovies textTitle={"Длительность"} textDescription={duration()} />
           <DataMovies
             textTitle={"Жанр"}
             textDescription={short.genre.join(", ")}
@@ -78,17 +87,11 @@ export function FilmCard() {
         <p>Отзывы</p>
         <div className={cn(styles["movie-title"])}>
           <div className={cn(styles["review-description"])}>
-            <h3>Not as good as infinity war..</h3>
-            <p>2019-04-29</p>
+            <h3>{short.review.name}</h3>
+            <p>{short.review.dateCreated}</p>
           </div>
           <div className={cn(styles["text-review"])}>
-            But its a pretty good film. A bit of a mess in some parts, lacking
-            the cohesive and effortless feel infinity war somehow managed to
-            accomplish. Some silly plot holes and characters that could&apos;ve
-            been cut (Ahem, captain marvel and thanos). The use of Captain
-            marvel in this film was just ridiculous. Shes there at the start,
-            bails for some reason? And then pops up at the end to serve no
-            purpose but deux ex machina a space ship...
+            {short.review.reviewBody}
           </div>
         </div>
       </div>

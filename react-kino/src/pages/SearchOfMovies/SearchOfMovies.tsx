@@ -7,9 +7,10 @@ import { useEffect } from "react";
 import { Title } from "../../components/Title/Title";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootStoreApp } from "../../store/store";
-import { getMovie } from "../../store/movie.slice";
+import { getMovie, loadFavorite } from "../../store/movie.slice";
 
 function SearchOfMovies() {
+  const userName = useSelector((s: RootStoreApp) => s.user.userName);
   const dispatch = useDispatch<AppDispatch>();
   const description = Object.values(
     useSelector((s: RootStoreApp) => s.movie.movies),
@@ -17,6 +18,11 @@ function SearchOfMovies() {
   const searchFilter = useSelector(
     (s: RootStoreApp) => s.movie.nameSearchMovie,
   );
+
+ useEffect(() => {
+  if(!userName) return
+    dispatch(loadFavorite())
+  }, [userName]);
 
   useEffect(() => {
     dispatch(getMovie(searchFilter || "Spider-Man"));

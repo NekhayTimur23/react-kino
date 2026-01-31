@@ -1,3 +1,5 @@
+import { IinitialState } from "../../store/user.slice";
+
 export interface NavMenuProps {
-    exitAccount: ( ) => void;
+    userName: IinitialState
 }

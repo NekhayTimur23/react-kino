@@ -38,7 +38,6 @@ function Authorization() {
     }
   };
 
-
   return (
     <div
       className={cn(styles["authorization"], {
